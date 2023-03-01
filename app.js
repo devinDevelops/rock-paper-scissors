@@ -12,7 +12,7 @@ function getComputerPick() {
     case 1:
       computerPick = 'paper';
       break;
-    default:
+    case 2:
       computerPick = 'scissors';
   }
 
@@ -25,9 +25,56 @@ function getUserPick() {
   return userPick;
 }
 
-// function getGameResult() {
-//   getComputerPick();
-//   getUserPick();
-// }
+function playRPS() {
 
-// getGameResult();
+  let playerScore = 0;
+  let computerScore = 0;
+
+  // RPS will have 5 rounds
+  for (let i = 1; i <= 5; i++) {
+    let playerWinsRound = function () {
+      playerScore++;
+      alert(`You win round ${i}!`);
+      console.log(`Round ${i}: Player`);
+    }
+
+    let computerWinsRound = function () {
+      computerScore++;
+      alert(`Computer wins round ${i}!`);
+      console.log(`Round ${i}: Computer`);
+    }
+
+    getUserPick();
+    getComputerPick();
+
+    // RPS logic
+    if (computerPick == userPick) {
+      alert(`Round ${i} is a draw!`);
+      console.log(`Round ${i}: Draw`);
+    } else if (computerPick == 'rock' && userPick == 'paper') {
+      playerWinsRound();
+    } else if (computerPick == 'paper' && userPick == 'rock') {
+      computerWinsRound();
+    } else if (computerPick == 'paper' && userPick == 'scissors') {
+      playerWinsRound();
+    } else if (computerPick == 'scissors' && userPick == 'paper') {
+      computerWinsRound();
+    } else if (computerPick == 'scissors' && userPick == 'rock') {
+      playerWinsRound();
+    } else { // computer rock vs player scissors
+      computerWinsRound();
+    }
+  }
+
+  // winner is displayed
+  if (playerScore > computerScore) {
+    console.log(`You won ${playerScore} of 5 rounds. You are the winner!`);
+  } else if (playerScore < computerScore) {
+    console.log(`Computer won ${computerScore} of 5 rounds. Computer is the winner!`);
+  } else {
+    console.log(`Player Score: ${playerScore} \nComputer Score: ${computerScore}`)
+    console.log(`The score is tied. It's a draw!`);
+  }
+}
+
+playRPS();
