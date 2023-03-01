@@ -45,7 +45,7 @@ function playRPS() {
 
     let computerWinsRound = function () {
       computerScore++;
-      displayPicks;
+      displayPicks();
       alert(`Computer wins round ${i}!`);
       console.log(`Round ${i}: Computer`);
     }
