@@ -30,16 +30,22 @@ function playRPS() {
   let playerScore = 0;
   let computerScore = 0;
 
+  function displayPicks() {
+    console.log(`Computer picked: ${computerPick} \n Player picked: ${userPick}`);
+  }
+
   // RPS will have 5 rounds
   for (let i = 1; i <= 5; i++) {
     let playerWinsRound = function () {
       playerScore++;
+      displayPicks();
       alert(`You win round ${i}!`);
       console.log(`Round ${i}: Player`);
     }
 
     let computerWinsRound = function () {
       computerScore++;
+      displayPicks;
       alert(`Computer wins round ${i}!`);
       console.log(`Round ${i}: Computer`);
     }
@@ -49,6 +55,7 @@ function playRPS() {
 
     // RPS logic
     if (computerPick == userPick) {
+      displayPicks();
       alert(`Round ${i} is a draw!`);
       console.log(`Round ${i}: Draw`);
     } else if (computerPick == 'rock' && userPick == 'paper') {
