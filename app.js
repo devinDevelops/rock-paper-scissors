@@ -1,87 +1,123 @@
-let computerPick;
+const rockBtn = document.getElementById('rock');
+const paperBtn = document.getElementById('paper');
+const scissorsBtn = document.getElementById('scissors');
+
+const playerScoreDisplay = document.getElementById('player-score');
+const computerScoreDisplay = document.getElementById('computer-score');
+
+const playerPickDisplay = document.getElementById('player-pick');
+const computerPickDisplay = document.getElementById('computer-pick');
+
+const roundWinnerDisplay = document.getElementById('round-winner');
+
+const gameWinnerDisplay = document.createElement('p');
+const restartBtn = document.createElement('button');
+restartBtn.textContent = 'Play again?';
+
 let userPick;
+let computerPick;
+
+function userPicksRock() {
+  userPick = 'Rock';
+  playerPickDisplay.textContent = userPick;
+  playRPS();
+}
+
+function userPicksPaper() {
+  userPick = 'Paper';
+  playerPickDisplay.textContent = userPick;
+  playRPS();
+}
+
+function userPicksScissors() {
+  userPick = 'Scissors';
+  playerPickDisplay.textContent = userPick;
+  playRPS();
+}
 
 function getComputerPick() {
   const randomNum = Math.floor(Math.random() * 3) // randomly generates 0, 1, or 2
   
-  // depending on randomNum, the computer will be assigned a choice
   switch (randomNum) {
     case 0:
-      computerPick = 'rock';
+      computerPick = 'Rock';
       break;
     case 1:
-      computerPick = 'paper';
+      computerPick = 'Paper';
       break;
     case 2:
-      computerPick = 'scissors';
+      computerPick = 'Scissors';
   }
 
+  computerPickDisplay.textContent = computerPick;
   return computerPick;
 }
 
-// the player inputs their choice
-function getUserPick() {
-  userPick = prompt('What is your pick?').toLowerCase();
-  return userPick;
-}
-
 function playRPS() {
-
-  let playerScore = 0;
-  let computerScore = 0;
-
-  function displayPicks() {
-    console.log(`Computer picked: ${computerPick} \n Player picked: ${userPick}`);
+  let playerWinsRound = function () {
+    playerScoreDisplay.textContent++;
+    roundWinnerDisplay.textContent = 'Player wins this round!';
   }
 
-  // RPS will have 5 rounds
-  for (let i = 1; i <= 5; i++) {
-    let playerWinsRound = function () {
-      playerScore++;
-      displayPicks();
-      alert(`You win round ${i}!`);
-      console.log(`Round ${i}: Player`);
-    }
-
-    let computerWinsRound = function () {
-      computerScore++;
-      displayPicks();
-      alert(`Computer wins round ${i}!`);
-      console.log(`Round ${i}: Computer`);
-    }
-
-    getUserPick();
-    getComputerPick();
-
-    // RPS logic
-    if (computerPick == userPick) {
-      displayPicks();
-      alert(`Round ${i} is a draw!`);
-      console.log(`Round ${i}: Draw`);
-    } else if (computerPick == 'rock' && userPick == 'paper') {
-      playerWinsRound();
-    } else if (computerPick == 'paper' && userPick == 'rock') {
-      computerWinsRound();
-    } else if (computerPick == 'paper' && userPick == 'scissors') {
-      playerWinsRound();
-    } else if (computerPick == 'scissors' && userPick == 'paper') {
-      computerWinsRound();
-    } else if (computerPick == 'scissors' && userPick == 'rock') {
-      playerWinsRound();
-    } else { // computer rock vs player scissors
-      computerWinsRound();
-    }
+  let computerWinsRound = function () {
+    computerScoreDisplay.textContent++;
+    roundWinnerDisplay.textContent = 'Computer wins this round!';
   }
 
-  // winner is displayed
-  if (playerScore > computerScore) {
-    console.log(`You won ${playerScore} of 5 rounds. You are the winner!`);
-  } else if (playerScore < computerScore) {
-    console.log(`Computer won ${computerScore} of 5 rounds. Computer is the winner!`);
-  } else {
-    console.log(`Player Score: ${playerScore} \nComputer Score: ${computerScore}`)
-    console.log(`The score is tied. It's a draw!`);
+  getComputerPick();
+
+  // RPS logic
+  if (computerPick == userPick) {
+    roundWinnerDisplay.textContent = `This round is a draw!`;
+  } else if (computerPick == 'Rock' && userPick == 'Paper') {
+    playerWinsRound();
+  } else if (computerPick == 'Paper' && userPick == 'Rock') {
+    computerWinsRound();
+  } else if (computerPick == 'Paper' && userPick == 'Scissors') {
+    playerWinsRound();
+  } else if (computerPick == 'Scissors' && userPick == 'Paper') {
+    computerWinsRound();
+  } else if (computerPick == 'Scissors' && userPick == 'Rock') {
+    playerWinsRound();
+  } else { // computer rock vs player scissors
+    computerWinsRound();
+  }
+
+  if (computerScoreDisplay.textContent == 5) {
+    gameWinnerDisplay.textContent = 'Computer wins the game!';
+    document.body.appendChild(gameWinnerDisplay);
+    disableRPSButtons();
+    document.body.appendChild(restartBtn);
+    restartBtn.addEventListener('click', restartRPS);
+
+  } else if (playerScoreDisplay.textContent == 5) {
+    gameWinnerDisplay.textContent = 'Player wins the game!';
+    document.body.appendChild(gameWinnerDisplay);
+    disableRPSButtons();
+    document.body.appendChild(restartBtn);
+    restartBtn.addEventListener('click', restartRPS);
   }
 }
 
-playRPS();
+function disableRPSButtons() {
+  rockBtn.setAttribute('disabled', 'true');
+  paperBtn.setAttribute('disabled', 'true');
+  scissorsBtn.setAttribute('disabled', 'true');
+}
+
+function restartRPS() {
+  playerPickDisplay.textContent = '';
+  computerPickDisplay.textContent = '';
+  playerScoreDisplay.textContent = 0;
+  computerScoreDisplay.textContent = 0;
+  rockBtn.removeAttribute('disabled', 'true');
+  paperBtn.removeAttribute('disabled', 'true');
+  scissorsBtn.removeAttribute('disabled', 'true');
+  gameWinnerDisplay.textContent = '';
+  roundWinnerDisplay.textContent = '';
+  restartBtn.style.display = 'none';
+}
+
+rockBtn.addEventListener('click', userPicksRock);
+paperBtn.addEventListener('click', userPicksPaper);
+scissorsBtn.addEventListener('click', userPicksScissors);
